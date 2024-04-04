@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useFormStatus } from "react-dom";
 import { IoAddSharp, IoPencil, IoTrash } from "react-icons/io5";
+import clsx from "clsx";
 
 export function CreateButton() {
     return (
@@ -28,6 +32,28 @@ export function DeleteButton() {
     return (
         <button className="rounded-sm border p-1 hover:bg-gray-100">
             <IoTrash size={20} />
+        </button>
+    );
+}
+
+export function SubmitButton({label} : {label: string}) {
+    const { pending } = useFormStatus();
+    const className = clsx(
+        "w-full px-5 py-3 rounded-lg shadow mt-8 text-white font-medium text-center bg-blue-700 hover:bg-blue-800 outline-none focus:ring focus:ring-blue-300 ease-in-out duration-300",
+        {
+            "opacity-50 cursor-progress": pending
+        }
+    );
+
+    return (
+        <button 
+            type="submit" 
+            className={className}
+            disabled={pending}
+        >
+         {
+            label === "Save" ? (<span>{pending ? "Saving..." : "Save"}</span>) : (<span>{pending ? "Updating..." : "Update"}</span>)
+         }   
         </button>
     );
 }
